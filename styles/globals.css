@@ -1,0 +1,262 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Scan this package's own sources for utility classes. Kept relative to the
+   package root so the design system stays self-contained when it is extracted
+   into its own repo. Consuming apps add their own @source globs on top. */
+@source "../**/*.{ts,tsx}";
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-caution: var(--caution);
+  --color-success: var(--success);
+  --color-info: var(--info);
+  --color-discovery: var(--discovery);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Status tones sit at the lightness of `--destructive` and below its chroma, so
+   red stays the loudest of the family. ANSI Z535 orders the three severities
+   (caution, warning, danger); info, success and discovery are the other three.
+   Rendered as a tint (`bg-success/10 text-success`), never as a solid fill. */
+
+/**
+ * The light ramp. `--background` sits a step off pure white and the surfaces
+ * that stack on it are white, so a card reads as raised rather than as the page
+ * with a border. The fills below it are a real step down from both: at 0.97 a
+ * skeleton, an empty state's icon tile and a secondary button were three percent
+ * off white, which is bright and, on a white card, close to invisible.
+ */
+:root {
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.945 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.945 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.945 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --warning: oklch(0.6 0.18 48);
+  --caution: oklch(0.62 0.15 78);
+  --success: oklch(0.577 0.16 155);
+  --info: oklch(0.577 0.19 255);
+  --discovery: oklch(0.577 0.21 300);
+  --border: oklch(0.91 0 0);
+  --input: oklch(0.91 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.945 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.91 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --warning: oklch(0.75 0.17 55);
+  --caution: oklch(0.8 0.16 85);
+  --success: oklch(0.72 0.17 155);
+  --info: oklch(0.72 0.15 250);
+  --discovery: oklch(0.72 0.17 300);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* Minimal scrollbar everywhere by default: a thin thumb, no visible
+     track/rail. Mirrors the `scroll-slim` look but reserves no gutter; scroll
+     containers that must keep content from shifting opt into `scroll-slim`. */
+  * {
+    scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent)
+      transparent;
+    scrollbar-width: thin;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--foreground) 20%, transparent);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Geist (--font-sans) is the default for everything — headings, body, prose,
+     and labels alike. JetBrains Mono (--font-mono) is reserved for genuine
+     code/data (e.g. permission strings, audit payloads), opted into per-site
+     with `font-mono`; labels and annotations are NOT mono. */
+}
+
+/* ─── Frost material ──────────────────────────────────────────────────
+   ONE translucent material for the whole system. Surfaces (dialog, sheet,
+   drawer, popover, dropdown, select, hover-card, card, alert) carry it by
+   default; controls opt in via their `frosted` prop. Because every frosted
+   element shares the same semi-transparent fill, stacking compounds opacity
+   automatically — a frosted control on a frosted surface reads more solid
+   with no per-instance tuning. Tune the whole look from the two tokens.
+
+   The fill is "smoked": --card mixed with a little --foreground so stacked
+   frosted elements compound toward grey (differentiated) instead of washing to
+   a flat tint. Light + dark each get their own mix — light leans the white card
+   slightly darker; dark leans the dark card lighter (toward luminous glass), so
+   neither theme reads as a heavy slab. Dark is still a WIP pass.
+   Accessibility hardening is deferred — the only a11y baked in here is the
+   @supports fallback below (correctness, so panels never render as unreadable
+   transparent boxes when backdrop-filter is unavailable). */
+:root {
+  --frost-blur: 24px;
+  --frost-fill: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--card), var(--foreground) 6%) 78%,
+    transparent
+  );
+}
+
+.dark {
+  --frost-fill: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--card), var(--foreground) 18%) 74%,
+    transparent
+  );
+}
+
+@supports not (
+    (backdrop-filter: blur(1px)) or
+    (-webkit-backdrop-filter: blur(1px))
+  ) {
+  :root,
+  .dark {
+    --frost-fill: var(--card);
+  }
+}
+
+@utility frosted {
+  background-color: var(--frost-fill);
+  -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(1.4);
+  backdrop-filter: blur(var(--frost-blur)) saturate(1.4);
+}
+
+/* Slim scrollbar that reserves its gutter (so content never shifts when the
+   scrollbar appears) and shows only a thumb — no visible track/rail. */
+@utility scroll-slim {
+  scrollbar-gutter: stable;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent)
+    transparent;
+  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--foreground) 20%, transparent);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+  }
+}

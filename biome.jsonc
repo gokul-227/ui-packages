@@ -1,0 +1,87 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  // `.baseline/` holds pristine shadcn stock as a diff anchor (see
+  // AGENTS.md); never lint or modify it.
+  "files": { "includes": ["!**/.baseline"] },
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/react",
+    "ultracite/biome/next",
+    "ultracite/biome/tanstack"
+  ],
+  "linter": {
+    "rules": {
+      // icons.ts is deliberately a barrel (the Phosphor icon vocabulary).
+      // noNamespaceImport only false-positives on stock shadcn
+      // (`import * as React`).
+      "performance": { "noBarrelFile": "off", "noNamespaceImport": "off" },
+      // noVoid: `void promise` is the idiomatic fire-and-forget for form
+      // submit handlers (field-form). noExcessiveCognitiveComplexity: a
+      // subjective metric; the flagged code (stock shadcn chart tooltip)
+      // carries inherent, not accidental, complexity.
+      "complexity": {
+        "noVoid": "off",
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      // noArrayIndexKey: the lists here are static placeholders (skeletons,
+      // the brand loader) or stock shadcn, none of which reorder, so the
+      // index is a correct key.
+      "suspicious": { "noArrayIndexKey": "off" },
+      // noNestedTernary: idiomatic React loading/error/data JSX state machines.
+      // noNonNullAssertion: after-guard access (data-table narrows column
+      // capability unions before rendering the sub-components that assert).
+      "style": { "noNestedTernary": "off", "noNonNullAssertion": "off" },
+      // useAnchorContent can't see content injected through Base UI's
+      // `render={<a/>}` prop (the menu item's children become the anchor's).
+      "a11y": { "useAnchorContent": "off" }
+    }
+  },
+  "overrides": [
+    {
+      // Stock shadcn primitives keep their upstream form (see
+      // AGENTS.md + the .baseline/ diff anchors); don't rewrite
+      // their hook dependency arrays away from upstream.
+      "includes": ["components/primitives/**"],
+      "linter": {
+        "rules": {
+          // Calendar passes inline component overrides to react-day-picker's
+          // `components` prop — that's the stock shadcn shape.
+          "correctness": {
+            "useExhaustiveDependencies": "off",
+            "noNestedComponentDefinitions": "off"
+          },
+          "style": { "noExportedImports": "off" },
+          // Stock shadcn patterns that are intrinsic to the components: chart
+          // injects CSS vars via dangerouslySetInnerHTML, sidebar persists its
+          // state in document.cookie.
+          "suspicious": { "noDocumentCookie": "off" },
+          "security": { "noDangerouslySetInnerHtml": "off" },
+          // Radix/Base UI handle ARIA + keyboard semantics at runtime; Biome's
+          // static a11y rules over-flag the underlying HTML shape (role=
+          // presentation separators, nav landmarks, etc.).
+          "a11y": {
+            "useSemanticElements": "off",
+            "useFocusableInteractive": "off",
+            "useKeyWithClickEvents": "off",
+            "useAriaPropsForRole": "off",
+            "noRedundantRoles": "off",
+            "noNoninteractiveElementInteractions": "off",
+            "noLabelWithoutControl": "off"
+          }
+        }
+      }
+    },
+    {
+      // A document carries no loader and often no dimensions, so the prose
+      // image is an `img`; a consumer with a framework image component
+      // overrides that entry in the map.
+      "includes": ["components/blocks/prose.tsx"],
+      "linter": {
+        "rules": {
+          "correctness": { "useImageSize": "off" },
+          "performance": { "noImgElement": "off" }
+        }
+      }
+    }
+  ]
+}

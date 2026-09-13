@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "base-luma",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "phosphor",
+  "rtl": false,
+  "aliases": {
+    "components": "@aec-craft/ui/components",
+    "utils": "@aec-craft/ui/lib/utils",
+    "ui": "@aec-craft/ui/components/primitives",
+    "lib": "@aec-craft/ui/lib",
+    "hooks": "@aec-craft/ui/hooks"
+  },
+  "menuColor": "inverted-translucent",
+  "menuAccent": "subtle",
+  "registries": {}
+}

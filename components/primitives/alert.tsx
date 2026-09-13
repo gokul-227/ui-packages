@@ -1,0 +1,92 @@
+/**
+ * @component alert · stock: shadcn base-luma
+ * @regen     pnpm ui:add alert
+ * @frost     surface — Alert panel uses the `frosted` material
+ * @delta     + frosted on the cva base (translucent fill + backdrop blur; existing border is the edge)
+ *            ~ variants: drop bg-card (fill now comes from frosted), keep text colors
+ *            + variants "warning" "caution" "success" "info": the status tones, each the
+ *              text treatment of "destructive" on its own token
+ */
+
+import { cn } from "@aec-craft/ui/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
+
+const alertVariants = cva(
+  "group/alert frosted relative grid w-full gap-0.5 rounded-2xl border px-4 py-3 text-left text-sm has-data-[slot=alert-action]:relative has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2.5 has-data-[slot=alert-action]:pr-18 *:[svg:not([class*='size-'])]:size-4 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current",
+  {
+    variants: {
+      variant: {
+        default: "text-card-foreground",
+        destructive:
+          "text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
+        warning:
+          "text-warning *:data-[slot=alert-description]:text-warning/90 *:[svg]:text-current",
+        caution:
+          "text-caution *:data-[slot=alert-description]:text-caution/90 *:[svg]:text-current",
+        success:
+          "text-success *:data-[slot=alert-description]:text-success/90 *:[svg]:text-current",
+        info: "text-info *:data-[slot=alert-description]:text-info/90 *:[svg]:text-current",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
+
+function Alert({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+  return (
+    <div
+      className={cn(alertVariants({ variant }), className)}
+      data-slot="alert"
+      role="alert"
+      {...props}
+    />
+  );
+}
+
+function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
+        className
+      )}
+      data-slot="alert-title"
+      {...props}
+    />
+  );
+}
+
+function AlertDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "text-balance text-muted-foreground text-sm md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+        className
+      )}
+      data-slot="alert-description"
+      {...props}
+    />
+  );
+}
+
+function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      className={cn("absolute top-2.5 right-3", className)}
+      data-slot="alert-action"
+      {...props}
+    />
+  );
+}
+
+export { Alert, AlertAction, AlertDescription, AlertTitle };
